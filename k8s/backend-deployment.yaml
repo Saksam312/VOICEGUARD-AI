@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voiceguard-backend
+  namespace: voiceguard-system
+  labels:
+    app: voiceguard-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: voiceguard-backend
+  template:
+    metadata:
+      labels:
+        app: voiceguard-backend
+    spec:
+      containers:
+        - name: voiceguard-backend
+          image: voiceguard-ai:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: voiceguard-config
+            - secretRef:
+                name: voiceguard-secret
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: voiceguard-config
+  namespace: voiceguard-system
+data:
+  PROJECT_NAME: "VOICEGUARD AI"
+  PROJECT_SUBTITLE: "Real-Time AI Voice Integrity & Impersonation Defense Platform"
+  AUDIO_RETENTION_MINUTES: "0"
+  STORE_RAW_AUDIO: "false"
+  STORE_FEATURE_DATA: "true"
+  SAMPLE_RATE: "16000"
